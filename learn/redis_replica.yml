@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: redis-replicaset
+spec:
+  replicas: 3  # Number of desired pod replicas
+  selector:
+    matchLabels:
+      app: redis  # This matches the label defined in the pod
+  template:
+    metadata:
+      labels:
+        app: redis  # Ensure this matches the selector label
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volumes:
+      - name: redis-data
+        emptyDir: {}
